@@ -24,18 +24,19 @@ class _MovieListPageState extends State<MovieListPage> {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<MovieListViewModel>(context);
-    return Padding(
-      padding: EdgeInsets.all(15),
-      child: Column(
-        children: <Widget>[
-          Text('Seach: ${widget.searchValue}'),
-          SizedBox(
-            height: 15,
-          ),
-          Expanded(
-            child: MovieList(vm),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.searchValue),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: MovieList(vm),
+            ),
+          ],
+        ),
       ),
     );
   }
