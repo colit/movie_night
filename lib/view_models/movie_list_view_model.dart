@@ -6,15 +6,26 @@ import 'package:flutter/material.dart';
 class MovieListViewModel extends ChangeNotifier {
   List<Movie> movies = List<Movie>();
   int totalResults;
-  int _currentPage = 1;
+  int _currentPage;
+  String _keyword;
 
-  Future<void> fetchMovies(String keyword) async {
-    final SearchResults results = await Webservice().fetchMovies(keyword, _currentPage);
-    if (results.response) {
+  Future<void> fetchFirstPage(String keyword) async {
+    _keyword = keyword;
+    _currentPage = 1;
+    movies = [];
+    await _fetchMovies();
+  }
+
+  Future<void> fetchNextPage() async {
+    _currentPage ++;
+    await _fetchMovies();
+  }
+
+  Future<void> _fetchMovies() async {
+    final SearchResults results = await Webservice().fetchMovies(_keyword, _currentPage);
+    if (results.totalResults != null) {
       movies.addAll(results.movies);
       totalResults = results.totalResults;
-      _currentPage ++;
-      //movies = results.map((item) => MovieViewModel(movie: item)).toList();
       notifyListeners();
     }
   }

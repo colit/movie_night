@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night/models/movie.dart';
+import 'package:movie_night/view_models/movie_list_view_model.dart';
 
 class MovieList extends StatefulWidget {
-  final List<Movie> movies;
-  final int totalResults;
+  final MovieListViewModel movieListViewModel;
+  //final List<Movie> movies;
+  //final int totalResults;
 
-  MovieList({this.movies, this.totalResults});
+  MovieList(this.movieListViewModel);
 
   @override
   _MovieListState createState() => _MovieListState();
@@ -14,14 +16,14 @@ class MovieList extends StatefulWidget {
 class _MovieListState extends State<MovieList> {
   @override
   Widget build(BuildContext context) {
-    List<Movie> _movies = widget.movies;
+    List<Movie> _movies = widget.movieListViewModel.movies;
     return ListView.builder(
         itemCount: _movies.length,
         itemBuilder: (context, i) {
           final Movie movie = _movies[i];
           print(i);
           if (i >= _movies.length - 1) {
-            print('please load more!');
+            widget.movieListViewModel.fetchNextPage();
           }
           return _buildRow(movie);
         });

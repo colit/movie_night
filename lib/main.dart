@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night/view_models/movie_list_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:movie_night/views/movie_list_page.dart';
+import 'package:movie_night/views/input_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: ChangeNotifierProvider(
         create: (context) => MovieListViewModel(),
-        child: MovieListPage(),
+        child: InputPage(),
       ),
     );
   }
