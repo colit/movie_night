@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_night/constants.dart';
 import 'package:movie_night/views/movie_list_page.dart';
+import 'package:provider/provider.dart';
 
 class InputPage extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
@@ -15,7 +16,10 @@ class InputPage extends StatelessWidget {
             Navigator.push(context,
               MaterialPageRoute(
                 builder: (context) {
-                  return MovieListPage();
+                  return ChangeNotifierProvider(
+                            create: (context) => MovieListPage(),
+                            child: MovieListPage(),
+                  );
                 }
               )
             );
@@ -25,3 +29,8 @@ class InputPage extends StatelessWidget {
     );
   }
 }
+
+//ChangeNotifierProvider(
+//  create: (context) => InputPage(),
+//  child: InputPage(),
+//),

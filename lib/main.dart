@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_night/view_models/movie_list_view_model.dart';
-import 'package:provider/provider.dart';
 import 'package:movie_night/views/input_page.dart';
 
 void main() => runApp(MyApp());
@@ -36,10 +34,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ChangeNotifierProvider(
-        create: (context) => MovieListViewModel(),
-        child: InputPage(),
-      ),
+      body: InputPage(),
     );
   }
 }
+
+//import 'package:movie_night/view_models/movie_list_view_model.dart';
+//import 'package:provider/provider.dart';
+//ChangeNotifierProvider(
+//  create: (context) => InputPage(),
+//  child: InputPage(),
+//),
