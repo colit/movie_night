@@ -17,35 +17,51 @@ class _MovieListState extends State<MovieList> {
   @override
   Widget build(BuildContext context) {
     List<Movie> _movies = widget.movieListViewModel.movies;
-    return ListView.builder(
-        itemCount: _movies.length,
-        itemBuilder: (context, i) {
-          final Movie movie = _movies[i];
-          print(i);
-          if (i >= _movies.length - 1) {
-            widget.movieListViewModel.fetchNextPage();
-          }
-          return _buildRow(movie);
-        });
+    print('build MovieListState');
+    return Scrollbar(
+      child: ListView.builder(
+          itemCount: _movies.length,
+          itemBuilder: (context, i) {
+            final Movie movie = _movies[i];
+            if (!movie.loaded) {
+              print('Movie #$i is not loaded');
+              widget.movieListViewModel.fetchNextPage(i);
+            }
+            return _buildRow(movie);
+          }),
+    );
   }
 
   Widget _buildRow(Movie movie) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          contentPadding: EdgeInsets.all(10),
-          leading: Container(
-            decoration: _moviePoster(movie.poster),
-            width: 50,
-            height: 100,
+
+    print('is row loaded: ${movie.loaded}');
+
+    if(movie.loaded){
+      return Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(10),
+            leading: Container(
+              decoration: _moviePoster(movie.poster),
+              width: 50,
+              height: 100,
+            ),
+            title: Container(
+              child: Text(movie.title),
+            ),
           ),
-          title: Container(
-            child: Text(movie.title),
-          ),
-        ),
-        Divider(),
-      ],
-    );
+          Divider(),
+        ],
+      );
+    } else {
+      return Column(
+        children: <Widget>[
+          SizedBox(height: 100),
+          Divider(),
+        ],
+      );
+    }
+
   }
 
   BoxDecoration _moviePoster(String poster) {

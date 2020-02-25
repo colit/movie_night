@@ -1,8 +1,9 @@
 class Movie {
+  bool loaded;
   final String title;
   final String poster;
 
-  Movie({this.title, this.poster});
+  Movie({this.loaded, this.title, this.poster});
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(

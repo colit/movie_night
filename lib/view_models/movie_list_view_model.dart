@@ -13,20 +13,36 @@ class MovieListViewModel extends ChangeNotifier {
     _keyword = keyword;
     _currentPage = 1;
     movies = [];
-    await _fetchMovies();
+    await _fetchMovies(1);
   }
 
-  Future<void> fetchNextPage() async {
-    _currentPage ++;
-    await _fetchMovies();
+  Future<void> fetchNextPage(int movieIndex) async {
+    var _pageIndex = movieIndex ~/ 10 + 1;
+    print('fetchNextPage: $_pageIndex');
+    await _fetchMovies(_pageIndex);
   }
 
-  Future<void> _fetchMovies() async {
+  Future<void> _fetchMovies(int page) async {
     final SearchResults results = await Webservice().fetchMovies(_keyword, _currentPage);
-    if (results.totalResults != null) {
-      movies.addAll(results.movies);
+    if (results.totalResults == null) return;
+
+    if (movies.length == 0) {
+      print('init fill');
       totalResults = results.totalResults;
-      notifyListeners();
+      for (var i = 0; i<totalResults; i++) {
+        movies.add(Movie(loaded: false));
+      }
+      print('new length: ${movies.length}');
     }
+    int _index = (_currentPage - 1) * 10;
+
+    results.movies.forEach((movie) {
+      movie.loaded = true;
+      movies[_index] = movie;
+      print('created($_index): ${movies[_index].title}');
+      _index++;
+    });
+
+    notifyListeners();
   }
 }

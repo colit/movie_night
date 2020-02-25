@@ -6,11 +6,11 @@ class MovieViewModel {
   MovieViewModel({this.movie});
 
   String get title {
-    return this.movie.title;
+    return this.movie.loaded ? this.movie.title : null;
   }
 
   String get poster {
-    return this.movie.poster;
+    return this.movie.loaded ? this.movie.poster : null;
   }
 
 }
