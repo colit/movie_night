@@ -2,30 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:movie_night/models/movie.dart';
 import 'package:movie_night/view_models/movie_list_view_model.dart';
 
-class MovieList extends StatefulWidget {
+class MovieList extends StatelessWidget {
   final MovieListViewModel movieListViewModel;
-  //final List<Movie> movies;
-  //final int totalResults;
-
   MovieList(this.movieListViewModel);
 
   @override
-  _MovieListState createState() => _MovieListState();
-}
-
-class _MovieListState extends State<MovieList> {
-  @override
   Widget build(BuildContext context) {
-    List<Movie> _movies = widget.movieListViewModel.movies;
-    print('build MovieListState');
+    List<Movie> _movies = movieListViewModel.movies;
     return Scrollbar(
       child: ListView.builder(
           itemCount: _movies.length,
           itemBuilder: (context, i) {
             final Movie movie = _movies[i];
             if (!movie.loaded) {
-              print('Movie #$i is not loaded');
-              widget.movieListViewModel.fetchNextPage(i);
+              movieListViewModel.fetchNextPage(i);
             }
             return _buildRow(movie);
           }),
@@ -33,24 +23,27 @@ class _MovieListState extends State<MovieList> {
   }
 
   Widget _buildRow(Movie movie) {
-
-    print('is row loaded: ${movie.loaded}');
-
     if(movie.loaded){
       return Column(
         children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.all(10),
-            leading: Container(
-              decoration: _moviePoster(movie.poster),
-              width: 50,
-              height: 100,
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            title: Container(
-              child: Text(movie.title),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  decoration: _moviePoster(movie.poster),
+                  width: 68,
+                  height: 100,
+                ),
+                SizedBox(width: 10),
+                Flexible(child: Text(movie.title)),
+              ],
             ),
           ),
-          Divider(),
         ],
       );
     } else {
@@ -67,7 +60,7 @@ class _MovieListState extends State<MovieList> {
   BoxDecoration _moviePoster(String poster) {
     return (poster == "N/A")
         ? BoxDecoration(
-      color: Colors.grey,
+      color: Colors.grey.shade700,
     )
         : BoxDecoration(
       image: DecorationImage(

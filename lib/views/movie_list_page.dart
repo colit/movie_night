@@ -26,18 +26,12 @@ class _MovieListPageState extends State<MovieListPage> {
     final vm = Provider.of<MovieListViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.searchValue),
+        title: Text('${widget.searchValue} (${vm.totalResults})'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(15),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: MovieList(vm),
-            ),
-          ],
-        ),
+      body: SafeArea(
+          child: MovieList(vm),
       ),
+      backgroundColor: Colors.grey,
     );
   }
 }

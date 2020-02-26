@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 class MovieListViewModel extends ChangeNotifier {
   List<Movie> movies = List<Movie>();
   int totalResults;
-  int _currentPage;
   String _keyword;
 
   Future<void> fetchFirstPage(String keyword) async {
     _keyword = keyword;
-    _currentPage = 1;
     movies = [];
     await _fetchMovies(1);
   }
@@ -23,7 +21,7 @@ class MovieListViewModel extends ChangeNotifier {
   }
 
   Future<void> _fetchMovies(int page) async {
-    final SearchResults results = await Webservice().fetchMovies(_keyword, _currentPage);
+    final SearchResults results = await Webservice().fetchMovies(_keyword, page);
     if (results.totalResults == null) return;
 
     if (movies.length == 0) {
@@ -34,7 +32,7 @@ class MovieListViewModel extends ChangeNotifier {
       }
       print('new length: ${movies.length}');
     }
-    int _index = (_currentPage - 1) * 10;
+    int _index = (page - 1) * 10;
 
     results.movies.forEach((movie) {
       movie.loaded = true;
